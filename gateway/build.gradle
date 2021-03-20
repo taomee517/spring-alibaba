@@ -1,0 +1,37 @@
+apply plugin: 'application'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group 'org.demo'
+version '1.0'
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:${springAlibabaVersion}"
+    }
+}
+
+dependencies {
+    compile (group: 'org.springframework.boot', name: 'spring-boot-starter-webflux'){
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+
+    compile (group: 'org.springframework.cloud', name: 'spring-cloud-starter-gateway'){
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-webflux'
+    }
+
+    //spring cloud nacos
+    compile(group: 'com.alibaba.cloud', name: 'spring-cloud-starter-alibaba-nacos-config'){
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+
+    compile (group: 'com.alibaba.cloud', name: 'spring-cloud-starter-alibaba-nacos-discovery'){
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+
+    /**log4j2*/
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}

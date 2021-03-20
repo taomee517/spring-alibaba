@@ -1,14 +1,76 @@
-plugins {
-    id 'java'
+allprojects {
+    ext {
+        springCloudVersion = 'Hoxton.SR1'
+        springAlibabaVersion = '2.2.4.RELEASE'
+        springGrpcVersion = '2.6.2.RELEASE'
+        springGradlePluginVersion = '2.2.4.RELEASE'
+        nettyVersion = '4.1.48.Final'
+        commonLang3Version = '3.9'
+        fastJsonVersion = '1.2.71'
+        slf4jVersion = '1.7.30'
+        log4j2Version = '2.9.1'
+        poiVersion = '4.1.0'
+        swaggerVersion = "2.9.2"
+        lombokVersion = '1.18.10'
+        junitVersion = '4.12'
+    }
+
+    apply plugin: "java"
+
+    group 'org.demo'
+    version '1.0'
+
+
+    buildscript {
+        repositories {
+            mavenLocal()
+            maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+            maven { url "https://plugins.gradle.org/m2/" }
+            mavenCentral()
+        }
+        dependencies {
+            classpath("org.springframework.boot:spring-boot-gradle-plugin:${springGradlePluginVersion}")
+        }
+    }
+
+    configurations.all{
+        resolutionStrategy(){
+            //将冲突解决策略改为发生冲突时报错
+            failOnVersionConflict()
+            force "com.google.code.findbugs:jsr305:3.0.2"
+            force "com.google.guava:guava:19.0"
+        }
+    }
+
+    // 冲突报错 + 以下任务 + 命令行搜索
+    // gradlew allDepInsight  --configuration compile --dependency ${keyword}
+    //可以搜索出某个jar包被哪些依赖引用，然后用于解决依赖冲突
+    //subprojects和allprojects的效果一样
+    task allDepInsight(type: DependencyInsightReportTask){
+        doFirst {}
+    }
+
+    repositories {
+        mavenLocal()
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        mavenCentral()
+    }
+
+    dependencies {
+        // common-lang3
+        compile group: 'org.apache.commons', name: 'commons-lang3', version: "${commonLang3Version}"
+
+        //fastjson
+        compile group: 'com.alibaba', name: 'fastjson', version: "${fastJsonVersion}"
+
+        // log4j2
+        compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: "${log4j2Version}"
+
+        // lombok
+        compile group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
+        annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+        testCompile group: 'junit', name: 'junit', version: "${junitVersion}"
+    }
 }
 
-group 'org.demo'
-version '1.0.0'
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-}

@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: gateway
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        group: DEFAULT_GROUP
+        namespace: f185c6fd-df78-4d82-a182-b5a294908b8a
+      config:
+        server-addr: 127.0.0.1:8848
+        group: DEFAULT_GROUP
+        file-extension: yaml
+        namespace: f185c6fd-df78-4d82-a182-b5a294908b8a
