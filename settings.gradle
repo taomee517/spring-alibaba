@@ -1,3 +1,4 @@
 rootProject.name = 'spring-alibaba'
 include 'gateway'
+include 'user-service'
 
